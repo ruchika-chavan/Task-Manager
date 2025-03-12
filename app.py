@@ -17,7 +17,7 @@ def init_db():
             deadline TEXT NOT NULL,
             importance TEXT CHECK(importance IN ('High', 'Moderate', 'Low')) NOT NULL
         )
-    """
+        """
     )
     conn.commit()
     conn.close()
@@ -58,11 +58,9 @@ def get_tasks():
 @app.route("/tasks", methods=["POST"])
 def add_task():
     data = request.json
-    task, deadline, importance = (
-        data.get("task"),
-        data.get("deadline"),
-        data.get("importance"),
-    )
+    task = data.get("task")
+    deadline = data.get("deadline")
+    importance = data.get("importance")
 
     if not task or not deadline or not importance:
         return jsonify({"error": "Missing fields"}), 400
