@@ -9,14 +9,16 @@ app = Flask(__name__)
 def init_db():
     conn = sqlite3.connect("tasks.db")
     cursor = conn.cursor()
-    cursor.execute("""
+    cursor.execute(
+        """
         CREATE TABLE IF NOT EXISTS tasks (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             task TEXT NOT NULL,
             deadline TEXT NOT NULL,
             importance TEXT CHECK(importance IN ('High', 'Moderate', 'Low')) NOT NULL
         )
-    """)
+    """
+    )
     conn.commit()
     conn.close()
 
@@ -45,7 +47,10 @@ def get_tasks():
             END ASC
         """
     )
-    tasks = [{"id": row[0], "task": row[1], "deadline": row[2], "importance": row[3]} for row in cursor.fetchall()]
+    tasks = [
+        {"id": row[0], "task": row[1], "deadline": row[2], "importance": row[3]}
+        for row in cursor.fetchall()
+    ]
     conn.close()
     return jsonify(tasks)
 
@@ -53,7 +58,11 @@ def get_tasks():
 @app.route("/tasks", methods=["POST"])
 def add_task():
     data = request.json
-    task, deadline, importance = data.get("task"), data.get("deadline"), data.get("importance")
+    task, deadline, importance = (
+        data.get("task"),
+        data.get("deadline"),
+        data.get("importance"),
+    )
 
     if not task or not deadline or not importance:
         return jsonify({"error": "Missing fields"}), 400
@@ -68,8 +77,8 @@ def add_task():
     conn = sqlite3.connect("tasks.db")
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT INTO tasks (task, deadline, importance) VALUES (?, ?, ?)", 
-        (task, deadline, importance)
+        "INSERT INTO tasks (task, deadline, importance) VALUES (?, ?, ?)",
+        (task, deadline, importance),
     )
     conn.commit()
     conn.close()
