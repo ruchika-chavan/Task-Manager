@@ -1,0 +1,104 @@
+body {
+    background-color: #E5D0AC;
+    margin-top: 0;
+}
+
+.text-center {
+    color: #4c2d06;
+    padding-top: 0px; 
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.labels {
+    text-align: center;
+    font-weight: bold;
+}
+
+.list-heading {
+    font-size: 2rem;
+    text-align: center;
+    margin: 20px;
+    margin-bottom: 30px;
+}
+
+.container {
+    max-width: 800px;
+}
+
+.mt-3 {
+    padding-top: 0px !important;
+}
+
+.mt-4 {
+    padding-top: 0px !important;
+    padding: 25px;
+}
+
+.mt-5 {
+    margin-top: 1rem !important;
+}
+
+.card {
+    /* background-color: #F8F2DE; */
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#add-task-btn {
+    background-color: #418a0d !important;
+    border-color: #418a0d;
+    color: #FFFFFF !important;
+    font-weight: bold;
+}
+
+.table th {
+    background-color: #754E1A;
+    color: white;
+    text-align: center;
+}
+
+.table td {
+    text-align: center;
+}
+
+/* table {
+    border-collapse: collapse; 
+    border: 0.5px solid #754E1A;
+} */
+
+th, td {
+    border: 0.5px solid #6e6e6e !important; 
+}
+
+.btn-danger {
+    font-size: 14px;
+    padding: 5px 10px;
+    width: 100px;
+    align-self: center;
+}
+
+/* Align "Add Task" button properly */
+.row.g-3 {
+    align-items: end; /* Aligns the button with inputs */
+}
+
+tr.past-deadline td {
+    background-color: #d3d3d3 !important; 
+    color: #313131 !important;
+}
+/* 
+tr.high-imp td {
+    background-color: #edbcbc; 
+    color: #990c0c ;
+}
+
+tr.mod-imp td {
+    background-color: #f1f091; 
+    color: #000000 ;
+}
+
+tr.low-imp td {
+    background-color: #c5f498; 
+    color: #000000;
+} */
