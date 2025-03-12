@@ -4,35 +4,51 @@ import sqlite3
 
 app = Flask(__name__)
 
+
 # Initialize Database
 def init_db():
     conn = sqlite3.connect("tasks.db")
     cursor = conn.cursor()
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS tasks (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        task TEXT NOT NULL,
-        deadline TEXT NOT NULL,
-        importance TEXT CHECK(importance IN ('High', 'Moderate', 'Low')) NOT NULL
-    )
-""")
+        CREATE TABLE IF NOT EXISTS tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            task TEXT NOT NULL,
+            deadline TEXT NOT NULL,
+            importance TEXT CHECK(importance IN ('High', 'Moderate', 'Low')) NOT NULL
+        )
+    """)
     conn.commit()
     conn.close()
 
+
 init_db()  # Run the database initialization
+
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
+
 @app.route("/tasks", methods=["GET"])
 def get_tasks():
     conn = sqlite3.connect("tasks.db")
     cursor = conn.cursor()
-    cursor.execute("SELECT id, task, deadline, importance FROM tasks ORDER BY deadline ASC, CASE importance WHEN 'High' THEN 1 WHEN 'Moderate' THEN 2 WHEN 'Low' THEN 3 END ASC")
+    cursor.execute(
+        """
+        SELECT id, task, deadline, importance 
+        FROM tasks 
+        ORDER BY deadline ASC, 
+            CASE importance 
+                WHEN 'High' THEN 1 
+                WHEN 'Moderate' THEN 2 
+                WHEN 'Low' THEN 3 
+            END ASC
+        """
+    )
     tasks = [{"id": row[0], "task": row[1], "deadline": row[2], "importance": row[3]} for row in cursor.fetchall()]
     conn.close()
     return jsonify(tasks)
+
 
 @app.route("/tasks", methods=["POST"])
 def add_task():
@@ -41,7 +57,7 @@ def add_task():
 
     if not task or not deadline or not importance:
         return jsonify({"error": "Missing fields"}), 400
-    
+
     # Check if deadline is before today
     today = datetime.today().date()
     task_deadline = datetime.strptime(deadline, "%Y-%m-%d").date()
@@ -51,11 +67,15 @@ def add_task():
 
     conn = sqlite3.connect("tasks.db")
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO tasks (task, deadline, importance) VALUES (?, ?, ?)", (task, deadline, importance))
+    cursor.execute(
+        "INSERT INTO tasks (task, deadline, importance) VALUES (?, ?, ?)", 
+        (task, deadline, importance)
+    )
     conn.commit()
     conn.close()
 
     return jsonify({"message": "Task added successfully"}), 201
+
 
 @app.route("/tasks/<int:task_id>", methods=["DELETE"])
 def delete_task(task_id):
@@ -66,6 +86,7 @@ def delete_task(task_id):
     conn.close()
 
     return jsonify({"message": "Task deleted successfully"}), 200
+
 
 @app.route("/tasks", methods=["DELETE"])
 def delete_all_tasks():
