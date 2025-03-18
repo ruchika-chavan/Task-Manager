@@ -1,5 +1,6 @@
-flask
+Flask>=2.0.0
 flask_sqlalchemy
 flask_wtf
 wtforms
 gunicorn
+Werkzeug>=2.0.0
