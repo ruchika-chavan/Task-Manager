@@ -1,6 +1,6 @@
 import unittest
 import json
-from app import app, init_db
+from app.db import init_db
 from datetime import datetime
 
 class TaskManagerTestCase(unittest.TestCase):
