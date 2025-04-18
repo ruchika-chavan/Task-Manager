@@ -4,6 +4,10 @@ import sqlite3
 
 app = Flask(__name__)
 
+import os
+
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tasks.db')
+
 # Initialize Database
 def init_db():
     try:
