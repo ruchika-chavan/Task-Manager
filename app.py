@@ -6,7 +6,11 @@ app = Flask(__name__)
 
 # Initialize Database
 def init_db():
-    conn = sqlite3.connect("tasks.db")
+    try:
+        conn = sqlite3.connect("tasks.db")
+    except sqlite3.Error as e:
+        print(f"Database error during initialization: {e}")
+        raise  # Optionally, raise the error or handle it as needed
     cursor = conn.cursor()
     cursor.execute(
         """
@@ -21,7 +25,6 @@ def init_db():
     conn.commit()
     conn.close()
 
-
 init_db()  # Run the database initialization
 
 
@@ -32,7 +35,10 @@ def index():
 
 @app.route("/tasks", methods=["GET"])
 def get_tasks():
-    conn = sqlite3.connect("tasks.db")
+    try:
+        conn = sqlite3.connect("tasks.db")
+    except sqlite3.Error as e:
+        return jsonify({"error": f"Database error: {e}"}), 500
     cursor = conn.cursor()
     cursor.execute(
         """
@@ -71,7 +77,10 @@ def add_task():
     if task_deadline < today:
         return jsonify({"error": "Deadline cannot be in the past!"}), 400
 
-    conn = sqlite3.connect("tasks.db")
+    try:
+        conn = sqlite3.connect("tasks.db")
+    except sqlite3.Error as e:
+        return jsonify({"error": f"Database error: {e}"}), 500
     cursor = conn.cursor()
     cursor.execute(
         "INSERT INTO tasks (task, deadline, importance) VALUES (?, ?, ?)",
@@ -85,7 +94,10 @@ def add_task():
 
 @app.route("/tasks/<int:task_id>", methods=["DELETE"])
 def delete_task(task_id):
-    conn = sqlite3.connect("tasks.db")
+    try:
+        conn = sqlite3.connect("tasks.db")
+    except sqlite3.Error as e:
+        return jsonify({"error": f"Database error: {e}"}), 500
     cursor = conn.cursor()
     cursor.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
     conn.commit()
