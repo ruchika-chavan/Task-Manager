@@ -11,6 +11,7 @@ DATABASE = os.path.join(os.path.dirname(__file__), 'tasks.db')
 # Initialize Database
 def init_db():
     if not os.path.exists(DATABASE):  # Check if the database file exists
+        print("Initializing database...")
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
         # Create the tables, for example:
@@ -24,6 +25,7 @@ def init_db():
         ''')
         conn.commit()
         conn.close()
+        print("Database initialized!")
     else:
         print(f"Database {DATABASE} already exists.")
 
