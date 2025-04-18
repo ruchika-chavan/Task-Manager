@@ -8,6 +8,9 @@ class TaskManagerTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # Initialize the database (set up before tests)
+        app.config['TESTING'] = True
+        init_db()
+
         init_db()
 
     def setUp(self):
