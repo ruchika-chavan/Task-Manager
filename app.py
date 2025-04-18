@@ -116,5 +116,12 @@ def delete_all_tasks():
     return jsonify({"message": "All tasks deleted"}), 200
 
 
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
+for rule in app.url_map.iter_rules():
+    print(rule)
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
