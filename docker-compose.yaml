@@ -1,12 +1,18 @@
-version: "3.8"
-
+version: '3.8'
 services:
-  flask-app:
-    build: .
+  app:
+    image: task-manager-app
     ports:
       - "5000:5000"
+    # Add a healthcheck if needed
+
+  test:
+    image: task-manager-app  # Or a separate test image
+    depends_on:
+      - app
+    command: pytest /app/test_apps.py
     volumes:
-      - .:/app
+      - .:/app  # Mount your workspace to access test files (if needed)
     environment:
-      - FLASK_ENV=development
-    restart: always
+      # Any environment variables your tests need
+      FLASK_APP: app.py
