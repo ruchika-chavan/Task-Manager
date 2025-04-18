@@ -10,26 +10,24 @@ DATABASE = os.path.join(os.path.dirname(__file__), 'tasks.db')
 
 # Initialize Database
 def init_db():
-    try:
-        conn = sqlite3.connect("tasks.db")
-    except sqlite3.Error as e:
-        print(f"Database error during initialization: {e}")
-        raise  # Optionally, raise the error or handle it as needed
-    cursor = conn.cursor()
-    cursor.execute(
-        """
-        CREATE TABLE IF NOT EXISTS tasks (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            task TEXT NOT NULL,
-            deadline TEXT NOT NULL,
-            importance TEXT CHECK(importance IN ('High', 'Moderate', 'Low')) NOT NULL
-        )
-        """
-    )
-    conn.commit()
-    conn.close()
+    if not os.path.exists(DATABASE):  # Check if the database file exists
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        # Create the tables, for example:
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS tasks (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                task TEXT NOT NULL,
+                deadline TEXT,
+                importance TEXT
+            )
+        ''')
+        conn.commit()
+        conn.close()
+    else:
+        print(f"Database {DATABASE} already exists.")
 
-init_db()  # Run the database initialization
+init_db()  
 
 
 @app.route("/")
