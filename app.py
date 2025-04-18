@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 import os
 
-DB_PATH = 'tasks.db'
+DATABASE = os.path.join(os.path.dirname(__file__), 'tasks.db')
 
 # Initialize Database
 def init_db():
