@@ -2,8 +2,7 @@ from datetime import datetime
 from flask import Flask, render_template, request, jsonify
 import sqlite3
 
-from __init__ import app  # Only import app, no db import here!
-
+app = Flask(__name__)
 
 # Initialize Database
 def init_db():
