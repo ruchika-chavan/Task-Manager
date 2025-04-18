@@ -1,11 +1,13 @@
-import pytest
-from app import app  # Assuming your Flask app is in a file called app.py
+import unittest
+from app import app
 
-@pytest.fixture
-def client():
-    with app.test_client() as client:
-        yield client
+class AppTestCase(unittest.TestCase):
+    def setUp(self):
+        self.client = app.test_client()
 
-def test_home(client):
-    response = client.get('/')
-    assert response.status_code == 200
+    def test_home(self):
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+
+if __name__ == '__main__':
+    unittest.main()
