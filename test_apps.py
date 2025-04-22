@@ -34,7 +34,7 @@ class TaskManagerTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 201)
     
         # Get the ID of the task just added
-        task_id = response.json['task_id']  # Adjust this line based on the actual response
+        task_id = response.json['id']  # Adjust this line based on the actual response
     
         # Now delete the task
         response = self.app.delete(f'/tasks/{task_id}')
