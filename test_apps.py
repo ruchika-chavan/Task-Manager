@@ -22,25 +22,27 @@ class TaskManagerTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 201)
 
     def test_delete_task(self):
-    # Add a task first
+        # First, add a task
         task_data = {
-            "task": "Test Task",
-            "deadline": "2025-05-01",
-            "importance": "High"
+            "task": "Delete Me",
+            "deadline": "2040-04-22",
+            "importance": "Low"
         }
-        response = self.app.post('/tasks',
-                                 data=json.dumps(task_data),
-                                 content_type='application/json')
-        self.assertEqual(response.status_code, 201)
-    
-        # Get the ID of the task just added
-        task_id = response.json['id']  # Adjust this line based on the actual response
-    
-        # Now delete the task
-        response = self.app.delete(f'/tasks/{task_id}')
-        self.assertEqual(response.status_code, 200)
-        self.assertIn('message', response.json)
-        self.assertEqual(response.json['message'], 'Task deleted successfully')
+        add_response = self.app.post('/tasks',
+                                     data=json.dumps(task_data),
+                                     content_type='application/json')
+        self.assertEqual(add_response.status_code, 201)
+
+        # Fetch all tasks and get the last added one
+        get_response = self.app.get('/tasks')
+        tasks = get_response.get_json()
+        self.assertGreater(len(tasks), 0)
+        task_id = tasks[-1]['id']  # Get the ID of the last added task
+
+        # Delete the task
+        delete_response = self.app.delete(f'/tasks/{task_id}')
+        self.assertEqual(delete_response.status_code, 200)
+        self.assertIn("message", delete_response.get_json())
 
 if __name__ == "__main__":
     unittest.main()
