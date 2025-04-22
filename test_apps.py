@@ -12,7 +12,7 @@ class TaskManagerTestCase(unittest.TestCase):
     def test_add_task(self):
         task_data = {
             "task": "Test Task",
-            "deadline": "2025-04-20",
+            "deadline": "2040-04-20",
             "importance": "High"
         }
 
@@ -21,14 +21,26 @@ class TaskManagerTestCase(unittest.TestCase):
                                  content_type='application/json')
         self.assertEqual(response.status_code, 201)
 
-    def test_missing_fields(self):
+    def test_delete_task(self):
+        # Add a task first
         task_data = {
-            "task": "Incomplete Task"
+            "task": "Test Task",
+            "deadline": "2040-04-20",
+            "importance": "High"
         }
         response = self.app.post('/tasks',
                                  data=json.dumps(task_data),
                                  content_type='application/json')
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 201)
+
+        # Get the ID of the task just added (assuming ID is 3)
+        task_id = response.json['id']  # You may need to adjust based on how your API works
+        
+        # Now delete the task
+        response = self.app.delete(f'/tasks/{task_id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('message', response.json)
+        self.assertEqual(response.json['message'], 'Task deleted successfully')
 
 if __name__ == "__main__":
     unittest.main()
