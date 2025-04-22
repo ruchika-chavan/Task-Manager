@@ -9,7 +9,7 @@ class TaskManagerTestCase(unittest.TestCase):
         self.app.testing = True
 
     @app.route('/tasks', methods=['POST'])
-def test_add_task():
+    def test_add_task():
     try:
         data = request.get_json()
         print("Received data:", data)  # Add this line
