@@ -22,20 +22,20 @@ class TaskManagerTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 201)
 
     def test_delete_task(self):
-        # Add a task first
+    # Add a task first
         task_data = {
             "task": "Test Task",
-            "deadline": "2040-04-20",
+            "deadline": "2025-05-01",
             "importance": "High"
         }
         response = self.app.post('/tasks',
                                  data=json.dumps(task_data),
                                  content_type='application/json')
         self.assertEqual(response.status_code, 201)
-
-        # Get the ID of the task just added (assuming ID is 3)
-        task_id = response.json['id']  # You may need to adjust based on how your API works
-        
+    
+        # Get the ID of the task just added
+        task_id = response.json['task_id']  # Adjust this line based on the actual response
+    
         # Now delete the task
         response = self.app.delete(f'/tasks/{task_id}')
         self.assertEqual(response.status_code, 200)
