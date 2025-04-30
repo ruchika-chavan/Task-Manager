@@ -12,7 +12,7 @@ class TaskManagerTestCase(unittest.TestCase):
     def test_add_task(self):
         task_data = {
             "task": "Test Task",
-            "deadline": "2040-04-20",
+            "deadline": "2022-04-20",
             "importance": "High"
         }
 
